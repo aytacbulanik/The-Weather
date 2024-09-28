@@ -21,14 +21,21 @@ class WeatherViewController: UIViewController, UITextFieldDelegate {
     }
 
     @IBAction func serachButtonPressed(_ sender: UIButton) {
-        
+        searchTextField.endEditing(true)
     }
     
     // klavyedeki go butonuna basıldığında gerçekleşecek kodlar aşağıdaki fonksiyonda yazılıyor.
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        print(searchTextField.text!)
         searchTextField.endEditing(true)
         return true
+    }
+    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+        if textField.text != "" {
+            return true
+        } else {
+            textField.placeholder = "Type Something"
+            return false
+        }
     }
     
     // textfield te yazmanın bittiğini anlatıyoruz.
