@@ -14,7 +14,7 @@ class WeatherViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var weatherIconImage: UIImageView!
     @IBOutlet weak var dereceLabel: UILabel!
     
-    
+    var weatherManager = WeatherManager()
     override func viewDidLoad() {
         super.viewDidLoad()
         searchTextField.delegate = self
@@ -40,6 +40,9 @@ class WeatherViewController: UIViewController, UITextFieldDelegate {
     
     // textfield te yazmanın bittiğini anlatıyoruz.
     func textFieldDidEndEditing(_ textField: UITextField) {
+        
+        guard let city = searchTextField.text else { return }
+        weatherManager.fetchWeather(cityName: city)
         searchTextField.text = ""
     }
     
