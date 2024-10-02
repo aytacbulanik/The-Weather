@@ -18,13 +18,29 @@ struct WeatherManager   {
     func performRequest(urlString : String) {
         guard let url = URL(string: urlString) else { return }
         let session = URLSession(configuration: .default)
-        session.dataTask(with: url) { data, response, error in
-            if error != nil {
-                print(error?.localizedDescription)
+        let task = session.dataTask(with: url) { data, response, error in
+            if let error = error {
+                print(error.localizedDescription)
+                return
             }
-            guard let safeData = data else { return }
-            let dataString = String(data: safeData, encoding: .utf8)
-            print(dataString!)
-        }.resume()
+            
+            guard let data else { return }
+            
+            if let weather = self.parseJSON(weatherData: data) {
+                print(weather.weather[0].description)
+            }
+        }
+        task.resume()
+    }
+    
+    func parseJSON(weatherData : Data) -> WeatherData? {
+        do {
+            let decoder = JSONDecoder()
+            let weather = try decoder.decode(WeatherData.self, from: weatherData)
+            return weather
+        } catch {
+            print(error.localizedDescription)
+            return nil
+        }
     }
 }
