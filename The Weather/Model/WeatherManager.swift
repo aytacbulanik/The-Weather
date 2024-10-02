@@ -27,7 +27,7 @@ struct WeatherManager   {
             guard let data else { return }
             
             if let weather = self.parseJSON(weatherData: data) {
-                print(weather.weather[0].description)
+                print(weather.sys.sunrise)
             }
         }
         task.resume()
