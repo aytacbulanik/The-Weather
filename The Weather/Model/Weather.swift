@@ -7,19 +7,20 @@
 
 import Foundation
 
-struct WeatherData : Codable {
-    let coord : Coord
-    let weather : [Weather]
-    let name : String
-    let main : Main
-    let sys : SYS
-}
 
 struct Weather : Codable {
     let id: Int
     let main: String
     let description: String
     let icon: String
+}
+
+struct WeatherData : Codable {
+    let coord : Coord
+    let weather : [Weather]
+    let name : String
+    let main : Main
+    let sys : SYS
 }
 
 struct Coord : Codable {
