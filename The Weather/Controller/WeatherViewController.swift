@@ -48,11 +48,15 @@ class WeatherViewController: UIViewController, UITextFieldDelegate, WeatherManag
     }
     
     func didUpdateWeather(_ weatherManager: WeatherManager, weather: WeatherModel) {
-        print(weather)
+        DispatchQueue.main.async {
+            self.dereceLabel.text = weather.tempatureString
+            self.cityLabel.text = weather.cityName
+            self.weatherIconImage.image = UIImage(systemName: weather.conditionName)
+        }
     }
     
     func didFailWithError(_ error: Error) {
-        print(error)
+        print(error.localizedDescription)
     }
     
    
