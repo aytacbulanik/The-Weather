@@ -9,8 +9,6 @@ import UIKit
 
 class WeatherViewController: UIViewController, UITextFieldDelegate, WeatherManagerDelegate {
     
-    
-
     @IBOutlet weak var cityLabel: UILabel!
     @IBOutlet weak var searchTextField: UITextField!
     @IBOutlet weak var weatherIconImage: UIImageView!
@@ -49,9 +47,14 @@ class WeatherViewController: UIViewController, UITextFieldDelegate, WeatherManag
         searchTextField.text = ""
     }
     
-    func didUpdateWeather(_ weather: WeatherModel) {
-        print(weather.tempatureString)
+    func didUpdateWeather(_ weatherManager: WeatherManager, weather: WeatherModel) {
+        print(weather)
     }
+    
+    func didFailWithError(_ error: Error) {
+        print(error)
+    }
+    
    
 }
 
