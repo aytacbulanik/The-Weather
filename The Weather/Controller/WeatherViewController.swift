@@ -17,6 +17,8 @@ class WeatherViewController: UIViewController {
     
     var weatherManager = WeatherManager()
     var locationManager = CLLocationManager()
+    var longatiude: CLLocationDegrees?
+    var latitude: CLLocationDegrees?
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -28,7 +30,12 @@ class WeatherViewController: UIViewController {
         weatherManager.delegate = self
         searchTextField.delegate = self
     }
-
+    
+    
+    @IBAction func currentLocationButtonPressed(_ sender: UIButton) {
+        locationManager.requestLocation()
+    }
+    
 }
 // MARK: - UITextFieldDelegate
 extension WeatherViewController : UITextFieldDelegate {
@@ -78,9 +85,10 @@ extension WeatherViewController : WeatherManagerDelegate {
 extension WeatherViewController : CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.last {
-            let lat = location.coordinate.latitude
-            let lon = location.coordinate.longitude
-            weatherManager.fetchWeatherWithCoor(latitude: lat, longutide: lon)
+            manager.stopUpdatingLocation()
+            let latitude = location.coordinate.latitude
+            let longitude = location.coordinate.longitude
+            weatherManager.fetchWeatherWithCoor(latitude: latitude, longutide: longitude)
         }
     }
     
