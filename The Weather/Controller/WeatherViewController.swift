@@ -20,13 +20,17 @@ class WeatherViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        locationManager.delegate = self
         locationManager.requestWhenInUseAuthorization()
+        locationManager.requestLocation()
+        
+        
         weatherManager.delegate = self
         searchTextField.delegate = self
     }
 
 }
-
+// MARK: - UITextFieldDelegate
 extension WeatherViewController : UITextFieldDelegate {
     @IBAction func serachButtonPressed(_ sender: UIButton) {
         searchTextField.endEditing(true)
@@ -55,6 +59,7 @@ extension WeatherViewController : UITextFieldDelegate {
     }
 }
 
+// MARK: - WeatherManagerDelegate
 extension WeatherViewController : WeatherManagerDelegate {
     func didUpdateWeather(_ weatherManager: WeatherManager, weather: WeatherModel) {
         DispatchQueue.main.async {
@@ -68,6 +73,19 @@ extension WeatherViewController : WeatherManagerDelegate {
         print(error.localizedDescription)
     }
     
-   
+}
+
+extension WeatherViewController : CLLocationManagerDelegate {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        if let location = locations.last {
+            let lat = location.coordinate.latitude
+            let lon = location.coordinate.longitude
+            weatherManager.fetchWeatherWithCoor(latitude: lat, longutide: lon)
+        }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print(error.localizedDescription)
+    }
 }
 
