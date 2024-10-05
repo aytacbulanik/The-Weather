@@ -6,8 +6,9 @@
 //
 
 import UIKit
+import CoreLocation
 
-class WeatherViewController: UIViewController, UITextFieldDelegate, WeatherManagerDelegate {
+class WeatherViewController: UIViewController {
     
     @IBOutlet weak var cityLabel: UILabel!
     @IBOutlet weak var searchTextField: UITextField!
@@ -15,12 +16,18 @@ class WeatherViewController: UIViewController, UITextFieldDelegate, WeatherManag
     @IBOutlet weak var dereceLabel: UILabel!
     
     var weatherManager = WeatherManager()
+    var locationManager = CLLocationManager()
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        locationManager.requestWhenInUseAuthorization()
         weatherManager.delegate = self
         searchTextField.delegate = self
     }
 
+}
+
+extension WeatherViewController : UITextFieldDelegate {
     @IBAction func serachButtonPressed(_ sender: UIButton) {
         searchTextField.endEditing(true)
     }
@@ -46,7 +53,9 @@ class WeatherViewController: UIViewController, UITextFieldDelegate, WeatherManag
         weatherManager.fetchWeather(cityName: city)
         searchTextField.text = ""
     }
-    
+}
+
+extension WeatherViewController : WeatherManagerDelegate {
     func didUpdateWeather(_ weatherManager: WeatherManager, weather: WeatherModel) {
         DispatchQueue.main.async {
             self.dereceLabel.text = weather.tempatureString
